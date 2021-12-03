@@ -20,64 +20,16 @@ public class JpaMain {
 		try {
 			// code 
 			
-			/*
-			// 비영속
-			Member member = new Member();
-			member.setId(101L);
-			member.setName("HelloJPA");
-			
-			// 영속
-			System.out.println("=== BEFORE ===");
-			em.persist(member);
-			
-			// 영속 해제
-//			em.detach(member);
-			System.out.println("=== AFTER ===");
-			
-			// commit 하는 시점에 영속성 컨텍스트에 잇는 것들의 쿼리가 날아감
-			tx.commit();
-			*/
-			
-			/*
-			Member findMember1 = em.find(Member.class, 101L);
-			Member findMember2 = em.find(Member.class, 101L);
-			
-			System.out.println("result = " + (findMember1 == findMember2));
-			*/
-			
-			/*
-			Member member1 = new Member(150L, "A");
-			Member member2 = new Member(160L, "B");
-			
-			em.persist(member1);
-			em.persist(member2);
-			
-			System.out.println("================");
-			
-			tx.commit();
-			*/
-			
-			/*
-			// 값만 바꿔도 update 쿼리를 쳐준다.
-			// dirty checking(변경 감지)이라고 함
-			// JPA는 collection처럼 다룬다.
-			// collection의 값을 변경하고 다시 값을 저장해주지 않듯이
-			// JPA 또한 같다.
-			// 즉, 따고 persist 해주지 않아도 된다.!
 			Member member = em.find(Member.class, 150L);
-			member.setName("ZZZZZZ");
+			member.setName("AAAAA");
 			
-			System.out.println("===========================");
-			tx.commit();
-			*/
+			// 특정 엔티티만 준영속 상태로 전환
+//			em.detach(member);
+			// 영속성 컨텍스트 초기화
+			// 테스트 케이스 같은 것들 작성 할 때 쿼리 볼 때 사용할 수 있음.
+			em.clear();
 			
-
-			Member member = new Member(200L, "member200");
-			em.persist(member);
-			
-			em.flush();
-			
-			System.out.println("===========================");
+			System.out.println("=================");
 			tx.commit();
 			
 			
