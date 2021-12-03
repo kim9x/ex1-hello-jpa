@@ -71,6 +71,15 @@ public class JpaMain {
 			tx.commit();
 			*/
 			
+
+			Member member = new Member(200L, "member200");
+			em.persist(member);
+			
+			em.flush();
+			
+			System.out.println("===========================");
+			tx.commit();
+			
 			
 		} catch (Exception e) {
 			// TODO: handle exception
