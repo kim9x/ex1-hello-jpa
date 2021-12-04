@@ -18,20 +18,6 @@ public class JpaMain {
 		tx.begin();
 		
 		try {
-			// code 
-			
-			Member member = em.find(Member.class, 150L);
-			member.setName("AAAAA");
-			
-			// 특정 엔티티만 준영속 상태로 전환
-//			em.detach(member);
-			// 영속성 컨텍스트 초기화
-			// 테스트 케이스 같은 것들 작성 할 때 쿼리 볼 때 사용할 수 있음.
-			em.clear();
-			
-			System.out.println("=================");
-			tx.commit();
-			
 			
 		} catch (Exception e) {
 			// TODO: handle exception
