@@ -46,9 +46,27 @@ public class Member {
 	public Team getTeam() {
 		return team;
 	}
-
+	
 	public void setTeam(Team team) {
 		this.team = team;
 	}
+
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", username=" + username + ", team=" + team.toString() + "]";
+	}
+
+	/*
+	public void changeTeam(Team team) {
+		this.team = team;
+		
+		// 연관관계 편의 메소드
+		// setTeam할 시점이 team.에도 셋팅을 해줄 수 있도록..
+		team.getMembers().add(this);
+	}
+	*/
+	
+	
+	
 	
 }

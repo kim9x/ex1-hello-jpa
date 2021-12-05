@@ -18,39 +18,33 @@ public class JpaMain {
 		tx.begin();
 		
 		try {
-			
 			Team team = new Team();
 			team.setName("TeamA");
+//			team.getMembers().add(member);
 			em.persist(team);
 			
 			Member member = new Member();
 			member.setUsername("member1");
-			/* 
-			member.setTeamId(team.getId());
+//			member.changeTeam(team);
 			em.persist(member);
 			
-			Member findMember = em.find(Member.class, member.getId());
+//			team.getMembers().add(member);
 			
-			Long findTeamId = findMember.getTeamId();
-			Team findTeam = em.find(Team.class, findTeamId);
-			*/
+			team.addMember(member);
 			
-			member.setTeam(team);
-			em.persist(member);
+//			em.flush();
+//			em.clear();
 			
-			em.flush();
-			em.clear();
+			Team findTeam = em.find(Team.class, team.getId()); // 1Â÷ Ä³½Ã
+			List<Member> members = findTeam.getMembers();
 			
-			Member findMember = em.find(Member.class, member.getId());
-			
-//			Team findTeam = findMember.getTeam();
-//			System.out.println("findTeam = " + findTeam);
-			
-			List<Member> members = findMember.getTeam().getMembers();
-			
+			System.out.println("==========================");
 			for (Member m : members) {
-				System.out.println("member = " + m.getUsername());
+				System.out.println("m = " + m.getUsername());
 			}
+				
+//			System.out.println("members = " + findTeam);
+			System.out.println("==========================");
 			
 			tx.commit();
 			
