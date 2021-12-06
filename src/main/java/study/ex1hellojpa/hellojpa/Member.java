@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Member {
@@ -26,6 +27,10 @@ public class Member {
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name = "TEAM_ID")
 	private Team team;
+	
+	@OneToOne
+	@JoinColumn(name = "LOCK_iD")
+	private Locker locker;
 
 	public String getId() {
 		return id;
