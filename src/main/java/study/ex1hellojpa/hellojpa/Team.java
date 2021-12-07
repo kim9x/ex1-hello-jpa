@@ -10,7 +10,7 @@
 //import javax.persistence.OneToMany;
 //
 //@Entity
-//public class Team {
+//public class Team extends BaseEntity {
 //	
 //	@Id
 //	@GeneratedValue
@@ -41,7 +41,7 @@
 //	}
 //	public void addMember(Member member) {
 //		// TODO Auto-generated method stub
-//		member.setTeam(this);
+////		member.setTeam(this);
 //		members.add(member);
 //	}
 //	@Override
