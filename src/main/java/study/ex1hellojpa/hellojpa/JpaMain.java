@@ -4,6 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceUnitUtil;
+
+import org.hibernate.Hibernate;
 
 public class JpaMain {
 	
@@ -17,19 +20,37 @@ public class JpaMain {
 		
 		try {
 			
-			Movie movie = new Movie();
-			movie.setDirector("aaaa");
-			movie.setActor("bbbb");
-			movie.setName("바람과함께사라지다");
-			movie.setPrice(10000);
+			Member member1 = new Member();
+			member1.setUsername("member1");
+			em.persist(member1);
 			
-			em.persist(movie);
+//			Member member2 = new Member();
+//			member2.setUsername("member2");
+//			em.persist(member2);
 			
 			em.flush();
 			em.clear();
 			
-			Movie findMovie = em.find(Movie.class, movie.getId());
-			System.out.println("findMovie = " + findMovie);
+			//
+//			Member findMember = em.find(Member.class, member.getId());
+//			Member findMember = em.getReference(Member.class, member1.getId());
+			
+//			Member m1 = em.find(Member.class, member1.getId());
+//			Member m2 = em.getReference(Member.class, member2.getId());
+			
+//			System.out.println("m1 = " + m1.getClass());
+			
+			Member refMember = em.getReference(Member.class, member1.getId());
+			System.out.println("refMember = " + refMember.getClass());
+			System.out.println("isLoaded Before = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
+			refMember.getUsername();
+			System.out.println("isLoaded After = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
+			
+			Hibernate.initialize(refMember); // 강제 초기화
+			
+//			
+//			logic(m1, m2);
+			
 			
 			tx.commit();
 			
@@ -38,9 +59,15 @@ public class JpaMain {
 			tx.rollback();	
 		} finally { }
 		 
-		emf.close();
+ 		emf.close();
 		
 		
+	}
+
+	private static void logic(Member m1, Member m2) {
+//		System.out.println("m1 == m2: " + (m1.getClass() == m2.getClass()));
+		System.out.println("m1 == Member: " + (m1 instanceof Member));
+		System.out.println("m2 == Member: " + (m2 instanceof Member));
 	}
 
 }
