@@ -1,10 +1,13 @@
 package study.ex1hellojpa.hellojpa;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnitUtil;
+import javax.persistence.TypedQuery;
 
 import org.hibernate.Hibernate;
 
@@ -19,38 +22,29 @@ public class JpaMain {
 		tx.begin();
 		
 		try {
+			Team team = new Team();
+			team.setName("teamA");
+			em.persist(team);
 			
 			Member member1 = new Member();
 			member1.setUsername("member1");
-			em.persist(member1);
-			
-//			Member member2 = new Member();
-//			member2.setUsername("member2");
-//			em.persist(member2);
+			member1.setTeam(team);
+			em.persist(member1);  
 			
 			em.flush();
 			em.clear();
 			
-			//
-//			Member findMember = em.find(Member.class, member.getId());
-//			Member findMember = em.getReference(Member.class, member1.getId());
+//			Member m = em.find(Member.class, member1.getId());
 			
-//			Member m1 = em.find(Member.class, member1.getId());
-//			Member m2 = em.getReference(Member.class, member2.getId());
+//			System.out.println("m = " + m.getTeam().getClass());
 			
-//			System.out.println("m1 = " + m1.getClass());
+//			System.out.println("====================");
+//			m.getTeam().getName(); // 초기화
+//			System.out.println("====================");
 			
-			Member refMember = em.getReference(Member.class, member1.getId());
-			System.out.println("refMember = " + refMember.getClass());
-			System.out.println("isLoaded Before = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
-			refMember.getUsername();
-			System.out.println("isLoaded After = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
-			
-			Hibernate.initialize(refMember); // 강제 초기화
-			
-//			
-//			logic(m1, m2);
-			
+			// fetch 조인 사용 시 필요한 경우 쿼리 한번으로 관계된 데이터를 모두 가져옴
+			List<Member> members = em.createQuery("select m from Member m join fetch m.team"  , Member.class)
+											.getResultList();
 			
 			tx.commit();
 			

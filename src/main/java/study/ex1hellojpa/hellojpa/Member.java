@@ -1,6 +1,5 @@
 package study.ex1hellojpa.hellojpa;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Member extends BaseEntity {
@@ -31,9 +27,9 @@ public class Member extends BaseEntity {
 //	@Column(name = "TEAM_ID")
 //	private Long teamId;
 	
-//	@ManyToOne (fetch = FetchType.LAZY)
-//	@JoinColumn(name = "TEAM_ID")
-//	private Team team;
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "TEAM_ID")
+	private Team team;
 	
 //	@OneToOne
 //	@JoinColumn(name = "LOCK_ID")
@@ -62,13 +58,13 @@ public class Member extends BaseEntity {
 		this.username = username;
 	}
 
-//	public Team getTeam() {
-//		return team;
-//	}
-//	
-//	public void setTeam(Team team) {
-//		this.team = team;
-//	}
+	public Team getTeam() {
+		return team;
+	}
+	
+	public void setTeam(Team team) {
+		this.team = team;
+	}
 
 	@Override
 	public String toString() {
