@@ -1,15 +1,9 @@
 package study.ex1hellojpa.hellojpa;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceUnitUtil;
-import javax.persistence.TypedQuery;
-
-import org.hibernate.Hibernate;
 
 public class JpaMain {
 	
@@ -23,22 +17,57 @@ public class JpaMain {
 		
 		try {
 			
-			Address address = new Address("city", "street", "10000");
-			
 			Member member = new Member();
 			member.setUsername("member1");
-			member.setHomeAddress(address);
+			member.setHomeAddress(new Address("homeCity", "street", "10000"));
+			
+			member.getFavoriteFoods().add("치킨");
+			member.getFavoriteFoods().add("족발");
+			member.getFavoriteFoods().add("피자");
+			
+//			member.getAddressHistory().add(new Address("old1", "street", "10000"));
+//			member.getAddressHistory().add(new Address("old2", "street", "10000"));
+			
 			em.persist(member);
 			
-			Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipCode());
+			em.flush();
+			em.clear();
 			
-			Member member2 = new Member();
-			member2.setUsername("member1");
-			member2.setHomeAddress(copyAddress);
-			em.persist(member2);
+			System.out.println("============ START =============");
+			Member findMember = em.find(Member.class, member.getId());
+			System.out.println("============ END =============");
 			
-			//
-			member.getHomeAddress().setCity("newCity");
+			// homeCity -> newCity
+			
+			// 값 타입은 이렇게 수정하면안됨.
+//			findMember.getHomeAddress().setCity("newCity");
+			// 이런 식으로 완전 히 교체를 해줘야한다.
+			Address a = findMember.getHomeAddress();
+//			findMember.setHomeAddress(new Address("old1", "street", "10000"));
+//			findMember.setHomeAddress(new Address("old2", "street", "10000"));
+			
+//			System.out.println("======= Foods =========");
+			// 치킨 -> 한식
+			findMember.getFavoriteFoods().remove("치킨");
+			findMember.getFavoriteFoods().add("한식");
+			
+//			System.out.println("======= ADDRESS =========");
+			findMember.getAddressHistory().remove(new AddressEntity("old1", "street", "10000"));
+			findMember.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+			findMember.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
+			
+			
+			
+			// 조회
+//			List<Address> addressHistory = findMember.getAddressHistory();
+//			for (Address address : addressHistory) {
+//				System.out.println("address = " + address.getCity());
+//			}
+//			
+//			Set<String> favoriteFoods = findMember.getFavoriteFoods();
+//			for (String favorriteFood : favoriteFoods) {
+//				System.out.println("favoriteFood = " + favoriteFoods);
+//			}
 			
 			tx.commit();
 			
@@ -47,7 +76,7 @@ public class JpaMain {
 			tx.rollback();	
 		} finally { }
 		 
- 		emf.close();
+  		emf.close();
 		
 		
 	}
