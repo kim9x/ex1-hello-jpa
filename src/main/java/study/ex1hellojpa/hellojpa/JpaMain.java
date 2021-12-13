@@ -1,9 +1,14 @@
 package study.ex1hellojpa.hellojpa;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 public class JpaMain {
 	
@@ -17,57 +22,38 @@ public class JpaMain {
 		
 		try {
 			
+			
+			// JPQL 사용
+//			List<Member> result = em.createQuery(
+//					"select m From Member m where m.username like '%kim%'"
+//					, Member.class
+//			).getResultList();
+//			
+//			for (Member member : result) {
+//				System.out.println("member = " + member);
+//			}
+			
+			//Criteria 사용 준비
+//			CriteriaBuilder cb = em.getCriteriaBuilder();
+//			CriteriaQuery<Member> query = cb.createQuery(Member.class);
+			//루트 클래스 (조회를 시작할 클래스)
+//			Root<Member> m = query.from(Member.class);
+			//쿼리 생성
+//			CriteriaQuery<Member> cq =  query.select(m).where(cb.equal(m.get("username"), "kim"));
+//			List<Member> resultList = em.createQuery(cq).getResultList();
+			
+			
 			Member member = new Member();
 			member.setUsername("member1");
-			member.setHomeAddress(new Address("homeCity", "street", "10000"));
-			
-			member.getFavoriteFoods().add("치킨");
-			member.getFavoriteFoods().add("족발");
-			member.getFavoriteFoods().add("피자");
-			
-//			member.getAddressHistory().add(new Address("old1", "street", "10000"));
-//			member.getAddressHistory().add(new Address("old2", "street", "10000"));
-			
 			em.persist(member);
 			
 			em.flush();
-			em.clear();
+			// flush는 commit과 (아래처럼)query가 날아갈 때 flush 된다.
+			// 결과 0
+			// 위의 경우 수동 flush 처리 필요			
 			
-			System.out.println("============ START =============");
-			Member findMember = em.find(Member.class, member.getId());
-			System.out.println("============ END =============");
-			
-			// homeCity -> newCity
-			
-			// 값 타입은 이렇게 수정하면안됨.
-//			findMember.getHomeAddress().setCity("newCity");
-			// 이런 식으로 완전 히 교체를 해줘야한다.
-			Address a = findMember.getHomeAddress();
-//			findMember.setHomeAddress(new Address("old1", "street", "10000"));
-//			findMember.setHomeAddress(new Address("old2", "street", "10000"));
-			
-//			System.out.println("======= Foods =========");
-			// 치킨 -> 한식
-			findMember.getFavoriteFoods().remove("치킨");
-			findMember.getFavoriteFoods().add("한식");
-			
-//			System.out.println("======= ADDRESS =========");
-			findMember.getAddressHistory().remove(new AddressEntity("old1", "street", "10000"));
-			findMember.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
-			findMember.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
-			
-			
-			
-			// 조회
-//			List<Address> addressHistory = findMember.getAddressHistory();
-//			for (Address address : addressHistory) {
-//				System.out.println("address = " + address.getCity());
-//			}
-//			
-//			Set<String> favoriteFoods = findMember.getFavoriteFoods();
-//			for (String favorriteFood : favoriteFoods) {
-//				System.out.println("favoriteFood = " + favoriteFoods);
-//			}
+			em.createNativeQuery("select MEMER_ID, city, street, zipcode, USERNAME from MEMBER")
+			.getResultList();
 			
 			tx.commit();
 			
